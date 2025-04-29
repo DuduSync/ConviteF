@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Convite Especial - 04/05</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Pacifico&family=Montserrat:wght@400;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(135deg, #000000 0%, #2a0845 100%);
+            color: #ffffff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+        }
+        
+        h1 {
+            font-family: 'Pacifico', cursive;
+            font-size: 3rem;
+            margin-bottom: 20px;
+            color: #9c4dff;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            transform: rotate(-5deg);
+            animation: pulse 2s infinite;
+        }
+        
+        .card {
+            background-color: rgba(0, 0, 0, 0.7);
+            border-radius: 20px;
+            padding: 30px;
+            margin: 20px 0;
+            box-shadow: 0 10px 30px rgba(156, 77, 255, 0.2);
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s;
+            border: 1px solid #9c4dff;
+        }
+        
+        .card:hover {
+            transform: translateY(-10px);
+        }
+        
+        .card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 10px;
+            background: linear-gradient(90deg, #9c4dff, #6a3093, #2a0845);
+        }
+        
+        h2 {
+            font-family: 'Pacifico', cursive;
+            color: #9c4dff;
+            margin-bottom: 15px;
+            font-size: 2rem;
+        }
+        
+        p {
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+        
+        .date {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #9c4dff;
+            margin: 20px 0;
+            animation: zoom 3s infinite;
+        }
+        
+        .couple, .birthday-person {
+            margin: 30px 0;
+            padding: 20px;
+            border-radius: 15px;
+            background-color: rgba(42, 8, 69, 0.5);
+        }
+        
+        .names {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin: 10px 0;
+            color: #9c4dff;
+        }
+        
+        .gift-info {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: rgba(42, 8, 69, 0.3);
+            border-radius: 10px;
+            border-left: 5px solid #9c4dff;
+        }
+        
+        .pix {
+            background-color: rgba(42, 8, 69, 0.5);
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 10px;
+            font-family: monospace;
+            word-break: break-all;
+            position: relative;
+        }
+        
+        .copy-pix {
+            background: #9c4dff;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            margin-top: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .copy-pix:hover {
+            background: #6a3093;
+        }
+        
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: #9c4dff;
+            border-radius: 50%;
+            animation: fall 5s linear infinite;
+        }
+        
+        .btn {
+            background: linear-gradient(45deg, #9c4dff, #6a3093);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 50px;
+            font-size: 1rem;
+            cursor: pointer;
+            margin: 20px 0;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(156, 77, 255, 0.3);
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(156, 77, 255, 0.4);
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+        
+        .modal-content {
+            background-color: #2a0845;
+            padding: 30px;
+            border-radius: 20px;
+            max-width: 500px;
+            text-align: center;
+            position: relative;
+            border: 1px solid #9c4dff;
+        }
+        
+        .close {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #9c4dff;
+        }
+        
+        .show {
+            opacity: 1;
+            pointer-events: all;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1) rotate(-5deg); }
+            50% { transform: scale(1.05) rotate(-5deg); }
+            100% { transform: scale(1) rotate(-5deg); }
+        }
+        
+        @keyframes zoom {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        
+        @keyframes fall {
+            0% { 
+                transform: translateY(-100px) rotate(0deg); 
+                opacity: 1;
+            }
+            100% { 
+                transform: translateY(100vh) rotate(360deg); 
+                opacity: 0;
+            }
+        }
+        
+        .hearts {
+            position: absolute;
+            font-size: 1.5rem;
+            animation: float 4s ease-in-out infinite;
+            opacity: 0.7;
+            color: #9c4dff;
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+            100% { transform: translateY(0) rotate(360deg); }
+        }
+        
+        @keyframes slideIn {
+            from { 
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .slide-in {
+            animation: slideIn 0.8s ease-out forwards;
+        }
+        
+        .notice {
+            background-color: rgba(156, 77, 255, 0.2);
+            border-left: 5px solid #9c4dff;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        
+        .dashboard-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #9c4dff;
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            cursor: pointer;
+            z-index: 100;
+        }
+        
+        .dashboard {
+            position: fixed;
+            bottom: 90px;
+            right: 20px;
+            background: #2a0845;
+            border-radius: 15px;
+            padding: 20px;
+            width: 300px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+            z-index: 99;
+            display: none;
+            border: 1px solid #9c4dff;
+            color: white;
+        }
+        
+        .dashboard h3 {
+            margin-bottom: 15px;
+            color: #9c4dff;
+        }
+        
+        .confirmations-list {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        .confirmation-item {
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(156, 77, 255, 0.3);
+        }
+        
+        .admin-panel {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(156, 77, 255, 0.3);
+        }
+        
+        .admin-input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid #9c4dff;
+            border-radius: 5px;
+            color: white;
+        }
+        
+        .name-input {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #9c4dff;
+            font-family: 'Montserrat', sans-serif;
+            background: rgba(0, 0, 0, 0.3);
+            color: white;
+            margin-bottom: 15px;
+        }
+        
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 30px;
+            margin: 10px 0;
+        }
+        
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+        
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 22px;
+            width: 22px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        
+        input:checked + .slider {
+            background-color: #9c4dff;
+        }
+        
+        input:checked + .slider:before {
+            transform: translateX(30px);
+        }
+        
+        .location {
+            margin: 30px 0;
+            padding: 20px;
+            border-radius: 15px;
+            background-color: rgba(42, 8, 69, 0.5);
+            border: 1px solid #9c4dff;
+        }
+        
+        .location h2 {
+            margin-bottom: 15px;
+        }
+        
+        .location p {
+            margin-bottom: 10px;
+        }
+        
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .date {
+                font-size: 1.5rem;
+            }
+            
+            .names {
+                font-size: 1.2rem;
+            }
+            
+            .modal-content {
+                width: 90%;
+                padding: 20px;
+            }
+            
+            .dashboard {
+                width: 90%;
+                right: 5%;
+                bottom: 100px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Celebração Especial!</h1>
+        
+        <div class="date">04 de Maio</div>
+        
+        <div class="card">
+            <p>É com grande alegria que convidamos você para celebrar conosco duas datas muito especiais!</p>
+            <button id="showDetails" class="btn">Mostrar Detalhes</button>
+        </div>
+        
+        <div id="details" class="hidden">
+            <div class="notice">
+                📢 Este convite é pessoal e intransferível - Apenas para quem recebeu diretamente dos festejados;
+                ou seja, convidado não convida.
+            </div>
+            
+            <div class="couple slide-in">
+                <h2>Aniversário de Casamento</h2>
+                <div class="names">Luana & Carlos</div>
+                <p>Celebrando o primeiro ano de união e amor!</p>
+                
+                <div class="gift-info">
+                    <p><strong>Preferência de presentes:</strong></p>
+                    <p>Qualquer mimo é bem vindo!</p>
+                </div>
+            </div>
+            
+            <div class="birthday-person slide-in">
+                <h2>O Aniversariante</h2>
+                <div class="names">Eduardo Felix</div>
+                <p>Finalmente saindo da adolescência e entrando na vida adulta (mas só no documento!)</p>
+                
+                <div class="gift-info">
+                    <p><strong>Presentes? Claro que sim!</strong></p>
+                    <p>Se for pra gastar dinheiro, que seja comigo! Aceito PIX com alegria:</p>
+                    <div class="pix">
+                        <p>Chave PIX: 11981306099</p>
+                        <button class="copy-pix" onclick="copyPix()">Copiar Chave PIX</button>
+                    </div>
+                    <p>(Mas se quiser trazer um presente físico, também aceito de braços abertos!)
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Novo espaço com informações de localização -->
+            <div class="location slide-in">
+                <h2>Local da Festa</h2>
+                <p><strong>Endereço:</strong></p>
+                <p>Estrada Cata Preta, 225</p>
+                <p>Condomínio Realiza II</p>
+                <p>Salão de Festas</p>
+                <p>Santo André - SP</p>
+                <p><strong>Horário:</strong> As 15:00</p>
+            </div>
+            
+            <input type="text" id="guestName" class="name-input" placeholder="Digite seu nome completo" required>
+            <button id="confirmPresence" class="btn">Confirmar Presença</button>
+        </div>
+    </div>
+    
+    <div id="confirmationModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Sua presença foi confirmada!</h2>
+            <p>Obrigado por confirmar! Estamos ansiosos para celebrar com você!</p>
+            <p>Detalhes do convite foram enviados para este dispositivo.</p>
+        </div>
+    </div>
+    
+    <div class="dashboard-btn" id="dashboardBtn">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="white">
+            <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/>
+        </svg>
+    </div>
+    
+    <div class="dashboard" id="dashboard">
+        <h3>Confirmações de Presença</h3>
+        <div class="confirmations-count">Total confirmados: <span id="totalConfirmations">0</span></div>
+        <div class="confirmations-list" id="confirmationsList">
+            <!-- As confirmações serão adicionadas aqui automaticamente -->
+        </div>
+        
+        <div class="admin-panel" id="adminPanel">
+            <h3>Painel Admin</h3>
+            <label class="toggle-switch">
+                <input type="" id="adminToggle">
+            </label>
+            <p>Modo Admin: <span id="adminStatus">Desativado</span></p>
+            <input type="password" id="adminPassword" class="admin-input" placeholder="Senha de administrador">
+            <button id="loginBtn" class="btn">Acessar</button>
+        </div>
+    </div>
+
+    <!-- Firebase SDK v9 modular -->
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
+        import { getFirestore, collection, addDoc, serverTimestamp, query, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-analytics.js";
+
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyBn8D-0-vsxZJkQ1B_QwqnQcfMD9PYKdYI",
+            authDomain: "aniversario-f9926.firebaseapp.com",
+            projectId: "aniversario-f9926",
+            storageBucket: "aniversario-f9926.appspot.com",
+            messagingSenderId: "900796060084",
+            appId: "1:900796060084:web:7f3080555b5591455ca2e1",
+            measurementId: "G-41T77EWXFD"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+        const db = getFirestore(app);
+        const confirmationsRef = collection(db, "confirmations");
+
+        // Configuração do admin
+        const ADMIN_PASSWORD = "festa0405"; // Senha de admin
+        let adminMode = false;
+
+        // Função para confirmar presença
+        async function confirmPresence() {
+            const guestName = document.getElementById('guestName').value.trim();
+            
+            if (!guestName) {
+                alert('Por favor, digite seu nome para confirmar presença!');
+                return;
+            }
+
+            // Verificar se já confirmou antes
+            if(localStorage.getItem('presenceConfirmed')) {
+                alert('Você já confirmou presença anteriormente!');
+                return;
+            }
+
+            try {
+                // Obter IP público (apenas para verificação interna)
+                const ipResponse = await fetch('https://api.ipify.org?format=json');
+                const ipData = await ipResponse.json();
+                
+                // Adicionar documento no Firestore
+                await addDoc(confirmationsRef, {
+                    name: guestName,
+                    deviceInfo: navigator.userAgent,
+                    screenResolution: `${window.screen.width}x${window.screen.height}`,
+                    timestamp: serverTimestamp(),
+                    ip: ipData.ip || 'Não capturado' // Usado apenas internamente
+                });
+
+                // Marcar como confirmado no localStorage
+                localStorage.setItem('presenceConfirmed', 'true');
+                localStorage.setItem('guestName', guestName);
+                
+                // Mostrar modal de confirmação
+                document.getElementById('confirmationModal').classList.add('show');
+                createConfetti();
+                
+                // Atualizar dashboard
+                updateDashboard();
+            } catch (error) {
+                console.error("Erro ao confirmar presença: ", error);
+                alert('Ocorreu um erro ao confirmar sua presença. Por favor, tente novamente.');
+            }
+        }
+
+        function updateDashboard() {
+    const q = query(confirmationsRef, orderBy("timestamp", "desc"));
+    
+    onSnapshot(q, (querySnapshot) => {
+        const confirmationsList = document.getElementById('confirmationsList');
+        const totalConfirmations = document.getElementById('totalConfirmations');
+        
+        // Atualizar contagem
+        totalConfirmations.textContent = querySnapshot.size;
+        
+        // Limpar lista
+        confirmationsList.innerHTML = '';
+
+        if (adminMode) {
+            // Se o admin estiver ativado, mostrar a lista
+            querySnapshot.forEach((doc) => {
+                const data = doc.data();
+                const item = document.createElement('div');
+                item.className = 'confirmation-item';
+                
+                const date = data.timestamp?.toDate() || new Date();
+                const dateStr = date.toLocaleDateString('pt-BR', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+
+                item.innerHTML = `
+                    <strong>${data.name || 'Convidado'}</strong><br>
+                    <small>Confirmado em: ${dateStr}</small>
+                `;
+                
+                confirmationsList.appendChild(item);
+            });
+        } else {
+            // Se o admin NÃO estiver ativado, exibir apenas uma mensagem
+            const notAllowed = document.createElement('div');
+            notAllowed.className = 'confirmation-item';
+            notAllowed.innerHTML = `<em>Ative o modo Admin para ver os nomes.</em>`;
+            confirmationsList.appendChild(notAllowed);
+        }
+    });
+}
+
+
+        // Configurar botão de confirmação
+        document.getElementById('confirmPresence').addEventListener('click', confirmPresence);
+
+        // Configurar botão do dashboard
+        document.getElementById('dashboardBtn').addEventListener('click', function() {
+            const dashboard = document.getElementById('dashboard');
+            dashboard.style.display = dashboard.style.display === 'block' ? 'none' : 'block';
+            if (dashboard.style.display === 'block') updateDashboard();
+        });
+
+        // Configurar toggle do admin
+        document.getElementById('adminToggle').addEventListener('change', function() {
+            adminMode = this.checked;
+            document.getElementById('adminStatus').textContent = adminMode ? 'Ativado' : 'Desativado';
+        });
+
+        // Configurar login admin
+        document.getElementById('loginBtn').addEventListener('click', function() {
+            const password = document.getElementById('adminPassword').value;
+            if(password === ADMIN_PASSWORD) {
+                alert('Acesso admin concedido!');
+                adminMode = true;
+                document.getElementById('adminToggle').checked = true;
+                document.getElementById('adminStatus').textContent = 'Ativado';
+                updateDashboard(); // Atualizar a lista automaticamente ao ativar admin
+            } else {
+                alert('Senha incorreta!');
+                adminMode = false;
+                document.getElementById('adminToggle').checked = false;
+                document.getElementById('adminStatus').textContent = 'Desativado';
+            }
+        });
+
+   // Botão para copiar PIX
+window.copyPix = function() {
+    const pixKey = "11981306099";
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(pixKey).then(() => {
+            alert("Chave PIX copiada para a área de transferência!");
+        }).catch(err => {
+            console.error('Erro ao copiar: ', err);
+            fallbackCopyPix();
+        });
+    } else {
+        fallbackCopyPix();
+    }
+
+    function fallbackCopyPix() {
+        const textArea = document.createElement("textarea");
+        textArea.value = pixKey;
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        try {
+            document.execCommand('copy');
+            alert('Chave PIX copiada para a área de transferência!');
+        } catch (err) {
+            console.error('Fallback: erro ao copiar', err);
+        }
+        document.body.removeChild(textArea);
+    }
+}
+
+        // Fechar modais
+        document.querySelectorAll('.close').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.getElementById('confirmationModal').classList.remove('show');
+            });
+        });
+
+        // Verificar se já confirmou presença
+        if(localStorage.getItem('presenceConfirmed')) {
+            document.getElementById('confirmPresence').textContent = 'Presença Já Confirmada';
+            document.getElementById('confirmPresence').style.backgroundColor = '#4CAF50';
+            const savedName = localStorage.getItem('guestName');
+            if(savedName) {
+                document.getElementById('guestName').value = savedName;
+                document.getElementById('guestName').disabled = true;
+            }
+        }
+
+        // Mostrar detalhes com animação
+        document.getElementById('showDetails').addEventListener('click', function() {
+            const details = document.getElementById('details');
+            details.classList.remove('hidden');
+            
+            // Animação de revelação
+            setTimeout(() => {
+                const elements = details.querySelectorAll('.slide-in');
+                elements.forEach((el, index) => {
+                    setTimeout(() => {
+                        el.style.opacity = '1';
+                        el.style.transform = 'translateY(0)';
+                    }, index * 200);
+                });
+            }, 10);
+            
+            this.classList.add('hidden');
+            createConfetti();
+            createHearts();
+        });
+
+        // Criar confete
+        function createConfetti() {
+            const colors = ['#9c4dff', '#6a3093', '#2a0845', '#ffffff'];
+            
+            for (let i = 0; i < 100; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.left = Math.random() * 100 + 'vw';
+                confetti.style.width = Math.random() * 10 + 5 + 'px';
+                confetti.style.height = confetti.style.width;
+                confetti.style.animationDuration = Math.random() * 3 + 2 + 's';
+                confetti.style.animationDelay = Math.random() * 2 + 's';
+                document.body.appendChild(confetti);
+                
+                setTimeout(() => {
+                    confetti.remove();
+                }, 5000);
+            }
+        }
+        
+        // Criar corações flutuantes
+        function createHearts() {
+            const container = document.querySelector('.container');
+            const heartSymbols = ['❤️', '💜', '💟', '🖤', '💘', '💝'];
+            
+            for (let i = 0; i < 15; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'hearts';
+                heart.textContent = heartSymbols[Math.floor(Math.random() * heartSymbols.length)];
+                heart.style.left = Math.random() * 100 + '%';
+                heart.style.top = Math.random() * 100 + '%';
+                heart.style.animationDuration = Math.random() * 3 + 3 + 's';
+                heart.style.animationDelay = Math.random() * 2 + 's';
+                container.appendChild(heart);
+            }
+        }
+        
+        // Efeito de digitação no título
+        const title = document.querySelector('h1');
+        const originalText = title.textContent;
+        title.textContent = '';
+        
+        let i = 0;
+        function typeWriter() {
+            if (i < originalText.length) {
+                title.textContent += originalText.charAt(i);
+                i++;
+                setTimeout(typeWriter, 100);
+            }
+        }
+        
+        setTimeout(typeWriter, 500);
+    </script>
+</body>
+</html>
